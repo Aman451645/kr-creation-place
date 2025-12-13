@@ -1,11 +1,9 @@
-/* ================= RESET ================= */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
 
-/* ================= GLOBAL ================= */
 body{
   font-family:'Poppins',sans-serif;
   background:#000;
@@ -13,7 +11,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ================= HERO ================= */
+/* HERO */
 .hero{
   height:100vh;
   display:flex;
@@ -33,12 +31,12 @@ body{
   opacity:0.7;
 }
 
-/* ================= STORY SECTION ================= */
+/* STORY */
 .story{
-  height:300vh; /* controls scroll length */
+  height:300vh;
 }
 
-/* ================= CANVAS ================= */
+/* CANVAS */
 canvas{
   position:fixed;
   top:0;
@@ -48,23 +46,22 @@ canvas{
   background:#000;
 }
 
-/* ================= STAGE TEXT ================= */
+/* STAGE TEXT */
 .stage-text{
   position:fixed;
   bottom:60px;
   left:50%;
   transform:translateX(-50%);
   font-size:1.8rem;
-  letter-spacing:1px;
-  color:#fff;
-  background:rgba(0,0,0,0.55);
   padding:12px 32px;
+  background:rgba(0,0,0,0.55);
   border-radius:40px;
+  letter-spacing:1px;
   pointer-events:none;
   backdrop-filter:blur(6px);
 }
 
-/* ================= CONTENT SECTIONS ================= */
+/* CONTENT */
 .content{
   min-height:100vh;
   padding:120px 10%;
@@ -82,7 +79,7 @@ canvas{
   line-height:1.7;
 }
 
-/* ================= DARK SECTION ================= */
+/* DARK SECTION */
 .dark{
   background:#111;
   color:#fff;
