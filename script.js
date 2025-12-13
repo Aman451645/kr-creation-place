@@ -16,7 +16,7 @@ const build = { frame: 0 };
 
 for(let i = 1; i <= frameCount; i++){
   const img = new Image();
-  img.src = `images/frame_${String(i).padStart(3,"0")}.jpg`;
+  img.src = `img/frame_${String(i).padStart(3,"0")}.jpg`;
   images.push(img);
 }
 
