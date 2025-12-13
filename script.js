@@ -1,89 +1,68 @@
-/* ================= RESET ================= */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+/* ================= CANVAS SETUP ================= */
+const canvas = document.getElementById("constructionCanvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+/* ================= IMAGE SEQUENCE ================= */
+const frameCount = 6; // total frames
+const images = [];
+const build = { frame: 0 };
+
+for(let i = 1; i <= frameCount; i++){
+  const img = new Image();
+  img.src = `images/frame_${String(i).padStart(3,"0")}.jpg`;
+  images.push(img);
 }
 
-/* ================= GLOBAL ================= */
-body{
-  font-family:'Poppins',sans-serif;
-  background:#000;
-  color:#fff;
-  overflow-x:hidden;
+images[0].onload = render;
+
+function render(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(images[build.frame],0,0,canvas.width,canvas.height);
 }
 
-/* ================= HERO ================= */
-.hero{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-
-.hero h1{
-  font-size:3rem;
-  line-height:1.2;
-}
-
-.hero p{
-  margin-top:12px;
-  opacity:0.7;
-}
-
-/* ================= STORY SECTION ================= */
-.story{
-  height:300vh; /* controls scroll length */
-}
-
-/* ================= CANVAS ================= */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
-  background:#000;
-}
+/* ================= SCROLL ANIMATION ================= */
+gsap.to(build,{
+  frame: frameCount - 1,
+  snap:"frame",
+  ease:"none",
+  scrollTrigger:{
+    trigger:".story",
+    start:"top top",
+    end:"bottom bottom",
+    scrub:1
+  },
+  onUpdate:render
+});
 
 /* ================= STAGE TEXT ================= */
-.stage-text{
-  position:fixed;
-  bottom:60px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:1.8rem;
-  letter-spacing:1px;
-  color:#fff;
-  background:rgba(0,0,0,0.55);
-  padding:12px 32px;
-  border-radius:40px;
-  pointer-events:none;
-  backdrop-filter:blur(6px);
-}
+const stageText = document.getElementById("stageText");
 
-/* ================= CONTENT SECTIONS ================= */
-.content{
-  min-height:100vh;
-  padding:120px 10%;
-  background:#fff;
-  color:#000;
-}
+const stages = [
+  "Empty Plot",
+  "Foundation Work",
+  "Structure Rising",
+  "Brick & Plaster",
+  "Finishing & Elevation",
+  "Project Completed"
+];
 
-.content h2{
-  font-size:2.4rem;
-  margin-bottom:20px;
-}
-
-.content p{
-  font-size:1.1rem;
-  line-height:1.7;
-}
-
-/* ================= DARK SECTION ================= */
-.dark{
-  background:#111;
-  color:#fff;
-}
+ScrollTrigger.create({
+  trigger:".story",
+  start:"top top",
+  end:"bottom bottom",
+  scrub:true,
+  onUpdate:self=>{
+    const index = Math.min(
+      stages.length - 1,
+      Math.floor(self.progress * stages.length)
+    );
+    stageText.textContent = stages[index];
+  }
+});
