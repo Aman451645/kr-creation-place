@@ -5,113 +5,40 @@
 <title>From Plot to Landmark</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 
-<!-- GSAP -->
+<link rel="stylesheet" href="style.css">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-<style>
-/* ================== GLOBAL ================== */
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-  font-family:'Poppins',sans-serif;
-  background:#000;
-  color:#fff;
-  overflow-x:hidden;
-}
-
-/* ================== HERO ================== */
-.hero{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-
-.hero h1{
-  font-size:3rem;
-}
-
-.hero p{
-  opacity:0.7;
-  margin-top:10px;
-}
-
-/* ================== STORY ================== */
-.story{
-  height:300vh;
-}
-
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
-  background:#000;
-}
-
-/* ================== STAGE TEXT ================== */
-.stage-text{
-  position:fixed;
-  bottom:60px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:1.8rem;
-  padding:12px 30px;
-  background:rgba(0,0,0,0.55);
-  border-radius:40px;
-  letter-spacing:1px;
-  pointer-events:none;
-}
-
-/* ================== CONTENT SECTIONS ================== */
-.content{
-  min-height:100vh;
-  padding:120px 10%;
-  background:#fff;
-  color:#000;
-}
-
-.dark{
-  background:#111;
-  color:#fff;
-}
-</style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <section class="hero">
   <h1>From Empty Plot<br>to Iconic Home</h1>
-  <p>Scroll down to start construction</p>
+  <p>Scroll down to witness construction</p>
 </section>
 
-<!-- CONSTRUCTION STORY -->
 <section class="story">
   <canvas id="constructionCanvas"></canvas>
   <div class="stage-text" id="stageText">Empty Plot</div>
 </section>
 
-<!-- PROJECTS -->
 <section class="content">
   <h2>Our Projects</h2>
   <p>Residential • Commercial • Villas • Turnkey Projects</p>
 </section>
 
-<!-- WHY -->
 <section class="content dark">
   <h2>Why Choose Us</h2>
-  <p>✔ Quality Construction<br>✔ On-Time Delivery<br>✔ Trusted Builder</p>
+  <p>
+    ✔ Quality Construction<br>
+    ✔ On-Time Delivery<br>
+    ✔ Trusted Builder
+  </p>
 </section>
 
-<!-- CONTACT -->
 <section class="content">
   <h2>Get Your Project Started</h2>
   <p>📞 +91-XXXXXXXXXX</p>
@@ -119,71 +46,6 @@ canvas{
   <p>📍 Vadodara, Gujarat</p>
 </section>
 
-<script>
-/* ================== CANVAS SETUP ================== */
-const canvas = document.getElementById("constructionCanvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-/* ================== IMAGE SEQUENCE ================== */
-const frameCount = 6; // change if you add more frames
-const images = [];
-const build = { frame: 0 };
-
-for(let i=1;i<=frameCount;i++){
-  const img = new Image();
-  img.src = `images/frame_${String(i).padStart(3,"0")}.jpg`;
-  images.push(img);
-}
-
-images[0].onload = draw;
-
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(images[build.frame],0,0,canvas.width,canvas.height);
-}
-
-/* ================== SCROLL ANIMATION ================== */
-gsap.to(build,{
-  frame: frameCount-1,
-  snap:"frame",
-  ease:"none",
-  scrollTrigger:{
-    trigger:".story",
-    start:"top top",
-    end:"bottom bottom",
-    scrub:1
-  },
-  onUpdate:draw
-});
-
-/* ================== STAGE TEXT ================== */
-const stageText = document.getElementById("stageText");
-const stages = [
-  "Empty Plot",
-  "Foundation Work",
-  "Structure Rising",
-  "Brick & Plaster",
-  "Finishing & Elevation",
-  "Project Completed"
-];
-
-ScrollTrigger.create({
-  trigger:".story",
-  start:"top top",
-  end:"bottom bottom",
-  scrub:true,
-  onUpdate:self=>{
-    const index = Math.min(
-      stages.length-1,
-      Math.floor(self.progress * stages.length)
-    );
-    stageText.textContent = stages[index];
-  }
-});
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
