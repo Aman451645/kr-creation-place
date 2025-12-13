@@ -1,7 +1,6 @@
 const canvas = document.getElementById("constructionCanvas");
 const ctx = canvas.getContext("2d");
 
-/* Resize canvas */
 function resizeCanvas(){
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -9,7 +8,7 @@ function resizeCanvas(){
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-/* Image sequence */
+/* IMAGE SEQUENCE */
 const frameCount = 6;
 const images = [];
 const build = { frame: 0 };
@@ -27,36 +26,48 @@ for(let i = 1; i <= frameCount; i++){
     }
   };
 
-  img.onerror = () => {
-    console.error("Image failed to load:", img.src);
-  };
-
   images.push(img);
 }
 
-/* Draw image */
+/* CINEMATIC RENDER */
 function render(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(images[build.frame],0,0,canvas.width,canvas.height);
+
+  const img = images[Math.floor(build.frame)];
+
+  // subtle zoom effect (camera movement)
+  const scale = 1 + build.frame * 0.02;
+  const w = canvas.width * scale;
+  const h = canvas.height * scale;
+
+  ctx.globalAlpha = 0.9;
+  ctx.drawImage(
+    img,
+    (canvas.width - w) / 2,
+    (canvas.height - h) / 2,
+    w,
+    h
+  );
+
+  ctx.globalAlpha = 1;
 }
 
-/* Scroll animation */
+/* SMOOTH SCROLL INTERPOLATION */
 function initScroll(){
   gsap.to(build,{
     frame: frameCount - 1,
-    snap:"frame",
-    ease:"none",
+    ease:"power2.out",
     scrollTrigger:{
       trigger:".story",
       start:"top top",
       end:"bottom bottom",
-      scrub:1
+      scrub:1.5   // <-- THIS MAKES IT FEEL ANIMATED
     },
     onUpdate:render
   });
 }
 
-/* Stage text */
+/* STAGE TEXT */
 const stageText = document.getElementById("stageText");
 const stages = [
   "Empty Plot",
@@ -73,10 +84,10 @@ ScrollTrigger.create({
   end:"bottom bottom",
   scrub:true,
   onUpdate:self=>{
-    const index = Math.min(
-      stages.length - 1,
-      Math.floor(self.progress * stages.length)
-    );
-    stageText.textContent = stages[index];
+    stageText.textContent =
+      stages[Math.min(
+        stages.length - 1,
+        Math.floor(self.progress * stages.length)
+      )];
   }
 });
