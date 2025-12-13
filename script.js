@@ -13,22 +13,22 @@ window.addEventListener("resize", resizeCanvas);
 const frameCount = 6;
 const images = [];
 const build = { frame: 0 };
-let loadedImages = 0;
+let loaded = 0;
 
 for(let i = 1; i <= frameCount; i++){
   const img = new Image();
-  img.src = `img/frame_${String(i).padStart(3,"0")}.jpg.webp`;
+  img.src = `img/frame_${String(i).padStart(3,"0")}.webp`;
 
   img.onload = () => {
-    loadedImages++;
-    if(loadedImages === frameCount){
+    loaded++;
+    if(loaded === frameCount){
       render();
       initScroll();
     }
   };
 
   img.onerror = () => {
-    console.error("Failed to load:", img.src);
+    console.error("Image failed to load:", img.src);
   };
 
   images.push(img);
@@ -58,7 +58,6 @@ function initScroll(){
 
 /* Stage text */
 const stageText = document.getElementById("stageText");
-
 const stages = [
   "Empty Plot",
   "Foundation Work",
